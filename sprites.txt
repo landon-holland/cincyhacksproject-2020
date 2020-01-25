@@ -1,0 +1,5 @@
+player Sprites\\idleframe1.png 0 0
+wall Sprites\\brick.png 100 0
+wall Sprites\\brick.png 100 50
+wall Sprites\\brick.png 100 100
+wall Sprites\\brick.png 100 150
