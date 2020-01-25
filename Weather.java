@@ -110,4 +110,11 @@ public class Weather {
 
         return (int) (weatherJSON.getJSONObject("wind").getDouble("speed") * 2.237);
     }
+
+    // we're also going to return the city name for the story
+    public String findCurrentCityName() throws IOException {
+        JSONObject weatherJSON = readJsonFromUrl("http://api.openweathermap.org/data/2.5/weather?zip=" + zipCode + ",us&APPID=" + apiKey);
+
+        return weatherJSON.getString("name");
+    }
 }
