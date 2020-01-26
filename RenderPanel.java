@@ -20,19 +20,19 @@ public class RenderPanel extends JPanel implements KeyListener {
     ArrayList<Enemy> spiderwebs = new ArrayList<>();
 
     public RenderPanel(){
-        this(50,50, 0);
+        this(50,50, 0, 0);
     }
 
-    public RenderPanel(int widthOfSprites, int heightOfSprites, int state){
+    public RenderPanel(int widthOfSprites, int heightOfSprites, int state, int isSnow){
         this.widthOfSprites = widthOfSprites;
         this.heightOfSprites = heightOfSprites;
 
 
         //sprites = SpriteLoader.load("levels\\StartingArea.txt", widthOfSprites, heightOfSprites);
         if (state == 0)
-            sprites = SpriteLoader.load("levels\\StartingArea.txt", widthOfSprites, heightOfSprites);
+            sprites = SpriteLoader.load("levels\\StartingArea.txt", widthOfSprites, heightOfSprites, isSnow);
         else {
-            sprites = SpriteLoader.load("levels\\Boss.txt", widthOfSprites, heightOfSprites);
+            sprites = SpriteLoader.load("levels\\Boss.txt", widthOfSprites, heightOfSprites, isSnow);
             gameState = 6;
         }
         setFocusable(true);
@@ -173,7 +173,7 @@ public class RenderPanel extends JPanel implements KeyListener {
                             if (gameState == 0){
                                 if (sprite.getX() > 1200){
                                     gameState = 1;
-                                    sprites = SpriteLoader.load("Levels\\SecondArea.txt", 50, 50);
+                                    sprites = SpriteLoader.load("Levels\\SecondArea.txt", 50, 50, isSnow);
                                     continue;
                                 }
                             }
@@ -184,26 +184,26 @@ public class RenderPanel extends JPanel implements KeyListener {
                             else if (gameState == 1){
                                 if (sprite.getX() > 400 && sprite.getX() < 800 && sprite.getY() > 600) {
                                     gameState = 2;
-                                    sprites = SpriteLoader.load("Levels\\HealthRoom.txt", 50, 50);
+                                    sprites = SpriteLoader.load("Levels\\HealthRoom.txt", 50, 50, isSnow);
                                     continue;
                                 }
                                 if (sprite.getX() > 1200){
                                     gameState = 3;
-                                    sprites = SpriteLoader.load("Levels\\Maze.txt", 50, 50);
+                                    sprites = SpriteLoader.load("Levels\\Maze.txt", 50, 50, isSnow);
                                     continue;
                                 }
                             }
                             else if (gameState == 2){
                                 if (sprite.getY() == 50){
                                     gameState = 1;
-                                    sprites = SpriteLoader.load("Levels\\SecondAreaBottom.txt", 50, 50);
+                                    sprites = SpriteLoader.load("Levels\\SecondAreaBottom.txt", 50, 50, isSnow);
                                     continue;
                                 }
                             }
                             else if (gameState == 3){
                                 if (sprite.getX() > 1200 && sprite.getY() > 150){
                                     gameState = 4;
-                                    sprites = SpriteLoader.load("Levels\\AreaBeforeBoss.txt", 50, 50);
+                                    sprites = SpriteLoader.load("Levels\\AreaBeforeBoss.txt", 50, 50, isSnow);
                                     continue;
                                 }
                             }
@@ -235,7 +235,7 @@ public class RenderPanel extends JPanel implements KeyListener {
                                     sprite.setImage(((PlayerSprite) sprite).getIdle2());
 
                             }
-                            if (keyCodes[KeyEvent.VK_D] && System.currentTimeMillis() - keyCodesTimes[KeyEvent.VK_D] > 50) {
+                            if (keyCodes[KeyEvent.VK_D] && System.currentTimeMillis() - keyCodesTimes[KeyEvent.VK_D] > 500) {
                                 sprite.move(widthOfSprites, 0);
                                 keyCodesTimes[KeyEvent.VK_D] = System.currentTimeMillis();
 

@@ -45,6 +45,8 @@ public class SpriteLoader {
     private static BufferedImage umbrellaLeft;
     private static BufferedImage wood;
     private static BufferedImage medKit;
+    private static BufferedImage snowGrass;
+    private static BufferedImage rainGrass;
 
 
     private static String fireAttack = "audio\\fire attack.wav";
@@ -96,14 +98,22 @@ public class SpriteLoader {
             medKit = ImageIO.read(new File("Sprites\\medkit.png"));
             leftSpider = ImageIO.read(new File("Sprites\\leftspider.png"));
             deadSpider = ImageIO.read(new File("Sprites\\deadspider.png"));
+            snowGrass = ImageIO.read(new File("Sprites\\snow.png"));
+            rainGrass = ImageIO.read(new File("Sprites\\rain.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static ArrayList<Sprite> load(String filename, int spriteWidth, int spiteHeight){
+    public static ArrayList<Sprite> load(String filename, int spriteWidth, int spiteHeight, int weather){
         ArrayList<Sprite> sprites = new ArrayList<>();
         CollideableSprite.setCollideables(new ArrayList<>());
+
+        if (weather == 4)
+            grass = snowGrass;
+        else if (weather == 2)
+            grass = rainGrass;
+
 
         String temp;
         try {

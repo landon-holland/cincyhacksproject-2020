@@ -34,7 +34,7 @@ public class Main {
         while (System.currentTimeMillis() - time < 1700);
         gui.setVisible(false);
         gui.remove(cutscenePanel);
-        RenderPanel renderPanel = new RenderPanel(50,50, 0);
+        RenderPanel renderPanel = new RenderPanel(50,50, 0, weather.findCurrentDescription());
         gui.add(renderPanel);
         gui.setVisible(true);
         JOptionPane.showMessageDialog(null, "Roy: I should go home now. Press tab to start.");
@@ -62,7 +62,7 @@ public class Main {
         while (System.currentTimeMillis() - time < 60000);
         gui.setVisible(false);
         gui.remove(cutscenePanel);
-        renderPanel = new RenderPanel(50,50, 1);
+        renderPanel = new RenderPanel(50,50, 1, weather.findCurrentDescription());
         gui.add(renderPanel);
         gui.setVisible(true);
 

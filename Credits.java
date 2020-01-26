@@ -24,7 +24,7 @@ public class Credits extends JPanel {
         g.drawString("FIN", 500, 1500 - offset);
         g.drawString("WEATHERMAN - CREDITS", 500, 2000 - offset);
         g.drawString("Gameplay and TTS - Drew Smith", 500, 2400 - offset);
-        g.drawString("Sprites and Concept - Daniel Whal", 500, 2600 - offset);
+        g.drawString("Sprites and Concept - Daniel Wahl", 500, 2600 - offset);
         g.drawString("Weather, Cutscenes and Voice Acting - Landon Holland (RIP)", 500, 2800 - offset);
         g.drawString("Thanks for Playing!", 500, 3600 - offset);
     }
