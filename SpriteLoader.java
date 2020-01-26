@@ -29,6 +29,12 @@ public class SpriteLoader {
     private static BufferedImage spider;
     private static BufferedImage spiderWeb;
     private static BufferedImage upAttack;
+    private static BufferedImage downAttack;
+    private static BufferedImage faceDown;
+    private static BufferedImage cloudOverlay;
+    private static BufferedImage window;
+    private static BufferedImage doorBottom;
+    private static BufferedImage doorTop;
 
 
     private static String fireAttack = "audio\\fire attack.wav";
@@ -55,7 +61,6 @@ public class SpriteLoader {
             umbrella = ImageIO.read(new File("Sprites\\umbrella.png"));
             walkLeftFoot = ImageIO.read(new File("Sprites\\walk left foot.png"));
             walkRightFoot = ImageIO.read(new File("Sprites\\walk right foot.png"));
-
             asphaltBlank = ImageIO.read(new File("Sprites\\asphalt blank.png"));
             asphaltYellowLine = ImageIO.read(new File("Sprites\\asphalt yellow line.png"));
             attack = ImageIO.read(new File("Sprites\\attack.png"));
@@ -65,6 +70,12 @@ public class SpriteLoader {
             spider = ImageIO.read(new File("Sprites\\spider.png"));
             spiderWeb = ImageIO.read(new File("Sprites\\spiderweb.png"));
             upAttack = ImageIO.read(new File("Sprites\\upAttack.png"));
+            downAttack = ImageIO.read(new File("Sprites\\attack down.png"));;
+            faceDown = ImageIO.read(new File("Sprites\\face down.png"));;
+            cloudOverlay = ImageIO.read(new File("Sprites\\cloudyOverlay.png"));;
+            window = ImageIO.read(new File("Sprites\\window.png"));;
+            doorBottom = ImageIO.read(new File("Sprites\\doorbottom.png"));;
+            doorTop = ImageIO.read(new File("Sprites\\doortop.png"));;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -82,29 +93,50 @@ public class SpriteLoader {
 
 
                 temp = scanner.nextLine();
-                for (int i = 0; i < temp.length(); i++){
-                    switch (temp.charAt(i)){
+                for (int i = 0; i < temp.length()/2; i++){
+                    switch (temp.charAt(i*2)){
                         case 'a':
                             sprites.add(new Wall(brick, i*spriteWidth, j*spiteHeight));
                             break;
                         case 'b':
-                            sprites.add(new Enemy(fireman, i*spriteWidth, j*spiteHeight, fireball, fireAttack));
+                            sprites.add(new Background(asphaltBlank, i*spriteWidth, j*spiteHeight));
                             break;
                         case 'c':
-                            sprites.add(new Enemy(snowman, i*spriteWidth, j*spiteHeight, snowball, snowSound));
+                            sprites.add(new Background(asphaltYellowLine, i*spriteWidth, j*spiteHeight));
                             break;
                         case 'd':
-                            sprites.add(new Enemy(raindrop, i*spriteWidth, j*spiteHeight, rainball, waterAttack));
+                            sprites.add(new Background(doorBottom, i*spriteWidth, j*spiteHeight));
+                            break;
+                        case 'e':
+                            sprites.add(new Background(doorTop, i*spriteWidth, j*spiteHeight));
+                            break;
+                        case 'f':
+                            sprites.add(new Wall(window, i*spriteWidth, j*spiteHeight));
                             break;
                         case '.':
                             sprites.add(new Background(grass, i*spriteWidth, j*spiteHeight));
                             break;
-                        case 'f':
-                            sprites.add(new PlayerSprite(i*spriteWidth, j*spiteHeight, idle1, idle2, frostBreath,
-                                    umbrella, walkLeftFoot, walkRightFoot));
+                    }
+                    switch (temp.charAt(i*2 + 1)){
+                        case 'a':
+                            sprites.add(new Enemy(fireman, i*spriteWidth, j*spiteHeight, fireball, fireAttack));
                             break;
-
-
+                        case 'b':
+                            sprites.add(new Enemy(snowman, i*spriteWidth, j*spiteHeight, snowball, snowSound));
+                            break;
+                        case 'c':
+                            sprites.add(new Enemy(raindrop, i*spriteWidth, j*spiteHeight, rainball, waterAttack));
+                            break;
+                        case 'd':
+                            sprites.add(new Enemy(lightningMan, i*spriteWidth, j*spiteHeight, lightBall, zapAttack));
+                            break;
+                        case 'e' :
+                            sprites.add(new Wall(spiderWeb, i*spriteWidth, j*spiteHeight));
+                            break;
+                        case 'p':
+                            sprites.add(new PlayerSprite(i*spriteWidth, j*spiteHeight, idle1, idle2, frostBreath,
+                                    umbrella, walkLeftFoot, walkRightFoot, attack, faceUp, upAttack, downAttack, faceDown));
+                            break;
                     }
                 }
                 j++;
