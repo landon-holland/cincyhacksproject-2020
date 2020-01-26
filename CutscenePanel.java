@@ -26,8 +26,15 @@ public class CutscenePanel extends JPanel {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            JOptionPane.showMessageDialog(null, "Hi my name is Roy. The weather in " + cityname + " is currently " + currentweather);
+                        }
+                    }).start();
 
                     new TextAnalyzer("Hi my name is Roy. The weather in " + cityname + " is currently " + currentweather).pronounce();
+
                 }
             }).start();
         }
@@ -50,12 +57,29 @@ public class CutscenePanel extends JPanel {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        JOptionPane.showMessageDialog(null, "Why did you do this? I am going to end you. You loser");
+                    }
+                }).start();
+
+
                 new TextAnalyzer("Why did you do this? I am going to end you. You loser").pronounce();
+
                 try {
                     Thread.sleep(14000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        JOptionPane.showMessageDialog(null, "No. You must die now");
+                    }
+                }).start();
+
+
                 new TextAnalyzer("No. You must die now").pronounce();
 
             }).start();
@@ -65,5 +89,7 @@ public class CutscenePanel extends JPanel {
             //error
             System.out.println("error");
         }
+
     }
+
 }

@@ -17,7 +17,7 @@ public abstract class Sprite {
     }
 
     public void draw(Graphics g, RenderPanel renderPanel){
-        g.drawImage(image, x - renderPanel.getX(), y - renderPanel.getY(),
+        g.drawImage(image, x, y,
                 renderPanel.getWidthOfSprites(), renderPanel.getHeightOfSprites(), null);
     }
 

@@ -52,7 +52,7 @@ public class Enemy extends CollideableSprite{
     public void updateAttack(){
         damageSprite.move(moveX, moveY);
         attackCounter++;
-        if (damageSprite.getCollisions().size() > 0 || attackCounter >= 10){
+        if (damageSprite.getCollisions().size() > 0 || attackCounter >= 20){
             moveX = 0;
             moveY = 0;
             damageSprite.setX(x);

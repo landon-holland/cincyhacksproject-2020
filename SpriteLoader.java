@@ -25,8 +25,10 @@ public class SpriteLoader {
     private static BufferedImage faceUp;
     private static BufferedImage lightBall;
     private static BufferedImage lightningMan;
-    private static BufferedImage spider;
-    private static BufferedImage spiderWeb;
+    public static BufferedImage spider;
+    public static BufferedImage leftSpider;
+    public static BufferedImage deadSpider;
+    public static BufferedImage spiderWeb;
     private static BufferedImage upAttack;
     private static BufferedImage downAttack;
     private static BufferedImage faceDown;
@@ -92,6 +94,8 @@ public class SpriteLoader {
             umbrellaUp = ImageIO.read(new File("Sprites\\up umbrella.png"));
             wood = ImageIO.read(new File("Sprites\\wood.png"));
             medKit = ImageIO.read(new File("Sprites\\medkit.png"));
+            leftSpider = ImageIO.read(new File("Sprites\\leftspider.png"));
+            deadSpider = ImageIO.read(new File("Sprites\\deadspider.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -99,6 +103,7 @@ public class SpriteLoader {
 
     public static ArrayList<Sprite> load(String filename, int spriteWidth, int spiteHeight){
         ArrayList<Sprite> sprites = new ArrayList<>();
+        CollideableSprite.setCollideables(new ArrayList<>());
 
         String temp;
         try {

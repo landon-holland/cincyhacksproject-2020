@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
@@ -16,7 +17,7 @@ public class Main {
         gui.setSize(1280,720);
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        /*CutscenePanel cutscenePanel = new CutscenePanel(1, weather.findCurrentCityName(), getWeather(weather.findCurrentDescription()));
+        CutscenePanel cutscenePanel = new CutscenePanel(1, weather.findCurrentCityName(), getWeather(weather.findCurrentDescription()));
         gui.add(cutscenePanel);
         gui.setVisible(true);
 
@@ -32,9 +33,31 @@ public class Main {
         time = System.currentTimeMillis();
         while (System.currentTimeMillis() - time < 17000);
         gui.setVisible(false);
-        gui.remove(cutscenePanel);*/
-        gui.add(new RenderPanel(50,50));
+        gui.remove(cutscenePanel);
+        RenderPanel renderPanel = new RenderPanel(50,50, 0);
+        gui.add(renderPanel);
         gui.setVisible(true);
+        JOptionPane.showMessageDialog(null, "Roy: I should go home now. Press tab to start.");
+
+        while (true){
+            if (renderPanel.getGameState() == 5)
+                break;
+        }
+        gui.setVisible(false);
+        gui.remove(renderPanel);
+        renderPanel.setSprites(new ArrayList<>());
+        cutscenePanel = new CutscenePanel(3, weather.findCurrentCityName(), getWeather(weather.findCurrentDescription()));
+        gui.add(cutscenePanel);
+        gui.setVisible(true);
+
+        time = System.currentTimeMillis();
+        while (System.currentTimeMillis() - time < 60000);
+        gui.setVisible(false);
+        gui.remove(cutscenePanel);
+        renderPanel = new RenderPanel(50,50, 1);
+        gui.add(renderPanel);
+        gui.setVisible(true);
+
     }
 
     public static String getWeather(int w){

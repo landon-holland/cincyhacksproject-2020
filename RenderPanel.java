@@ -1,3 +1,4 @@
+import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -15,18 +16,25 @@ public class RenderPanel extends JPanel implements KeyListener {
     private boolean[] keyCodes = new boolean[1000];
     private long[] keyCodesTimes = new long[1000];
     private ArrayList<Sprite>  sprites;
-    private int gameState = 0;
+    private volatile int gameState = 0;
+    ArrayList<Enemy> spiderwebs = new ArrayList<>();
 
     public RenderPanel(){
-        this(50,50);
+        this(50,50, 0);
     }
 
-    public RenderPanel(int widthOfSprites, int heightOfSprites){
+    public RenderPanel(int widthOfSprites, int heightOfSprites, int state){
         this.widthOfSprites = widthOfSprites;
         this.heightOfSprites = heightOfSprites;
 
-        sprites = SpriteLoader.load("levels\\sprites2.txt", widthOfSprites, heightOfSprites);
 
+        //sprites = SpriteLoader.load("levels\\StartingArea.txt", widthOfSprites, heightOfSprites);
+        if (state == 0)
+            sprites = SpriteLoader.load("levels\\StartingArea.txt", widthOfSprites, heightOfSprites);
+        else {
+            sprites = SpriteLoader.load("levels\\Boss.txt", widthOfSprites, heightOfSprites);
+            gameState = 6;
+        }
         setFocusable(true);
         requestFocus();
         addKeyListener(this);
@@ -39,6 +47,44 @@ public class RenderPanel extends JPanel implements KeyListener {
                 boolean isIdle1 = true;
                 Random random = new Random();
 
+                if (gameState == 6){
+                    spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 1300, 200, SpriteLoader.spiderWeb, null));
+                    spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 1300, 250, SpriteLoader.spiderWeb, null));
+                    spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 1300, 300, SpriteLoader.spiderWeb, null));
+                    spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 1300, 350, SpriteLoader.spiderWeb, null));
+                    spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 1300, 150, SpriteLoader.spiderWeb, null));
+                    spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 1300, 400, SpriteLoader.spiderWeb, null));
+                    spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 1300, 450, SpriteLoader.spiderWeb, null));
+                    spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 1300, 500, SpriteLoader.spiderWeb, null));
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while (true) {
+                                try {
+                                    AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File("audio\\bossbattle.wav"));
+
+                                    Clip clip = AudioSystem.getClip();
+                                    clip.open(audioIn);
+                                    clip.start();
+
+                                    AudioFormat format = audioIn.getFormat();
+                                    long frames = audioIn.getFrameLength();
+                                    double durationInSeconds = (frames+0.0) / format.getFrameRate();
+                                    long time = System.currentTimeMillis();
+                                    while (System.currentTimeMillis() - time < durationInSeconds * 1000){
+                                        if (gameState == 9) {
+                                            clip.stop();
+                                            return;
+                                        }
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }).start();
+                }
+
                 while (true) {
                     if (System.currentTimeMillis() - time > 500){
                         time = System.currentTimeMillis();
@@ -46,6 +92,36 @@ public class RenderPanel extends JPanel implements KeyListener {
                             isIdle1 = false;
                         else
                             isIdle1 = true;
+
+                        if (gameState >= 6){
+                            for (Sprite sprite : spiderwebs){
+                                if (((Enemy) sprite).getDamageSprite().isVisible()){
+                                    ((Enemy) sprite).updateAttack();
+                                }
+                                else {
+                                    if (random.nextDouble() > .66) {
+                                        ((Enemy) sprite).attack(0, 50);
+                                        for (Sprite sprite2 : sprites) {
+                                            if (sprite2 instanceof PlayerSprite) {
+                                                if (Math.abs(sprite.getX() - sprite2.getX()) <
+                                                        Math.abs(sprite.getY() - sprite2.getY())) {
+                                                    if (sprite.getY() - sprite2.getY() > 0)
+                                                        ((Enemy) sprite).attack(0, -50);
+                                                    else
+                                                        ((Enemy) sprite).attack(0, 50);
+                                                } else {
+                                                    if (sprite.getX() - sprite2.getX() > 0)
+                                                        ((Enemy) sprite).attack(-50, 0);
+                                                    else
+                                                        ((Enemy) sprite).attack(50, 0);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                         for (Sprite sprite : sprites) {
                             if (sprite instanceof Enemy) {
                                 if (((Enemy) sprite).getDamageSprite().isVisible()){
@@ -97,17 +173,43 @@ public class RenderPanel extends JPanel implements KeyListener {
                             if (gameState == 0){
                                 if (sprite.getX() > 1200){
                                     gameState = 1;
-                                    sprites = SpriteLoader.load("Levels\\sprites3.txt", 50, 50);
+                                    sprites = SpriteLoader.load("Levels\\SecondArea.txt", 50, 50);
                                     continue;
                                 }
                             }
                             else if (gameState == 1){
                                 if (sprite.getX() > 400 && sprite.getX() < 800 && sprite.getY() > 600) {
                                     gameState = 2;
-                                    sprites = SpriteLoader.load("Levels\\sprites2.txt", 50, 50);
+                                    sprites = SpriteLoader.load("Levels\\HealthRoom.txt", 50, 50);
+                                    continue;
+                                }
+                                if (sprite.getX() > 1200){
+                                    gameState = 3;
+                                    sprites = SpriteLoader.load("Levels\\Maze.txt", 50, 50);
                                     continue;
                                 }
                             }
+                            else if (gameState == 2){
+                                if (sprite.getY() == 50){
+                                    gameState = 1;
+                                    sprites = SpriteLoader.load("Levels\\SecondAreaBottom.txt", 50, 50);
+                                    continue;
+                                }
+                            }
+                            else if (gameState == 3){
+                                if (sprite.getX() > 1200 && sprite.getY() > 150){
+                                    gameState = 4;
+                                    sprites = SpriteLoader.load("Levels\\AreaBeforeBoss.txt", 50, 50);
+                                    continue;
+                                }
+                            }
+                            else if (gameState == 4){
+                                if (sprite.getX() > 1200){
+                                    gameState = 5;
+                                    continue;
+                                }
+                            }
+
 
 
                             if (keyCodes[KeyEvent.VK_W] && System.currentTimeMillis() - keyCodesTimes[KeyEvent.VK_W] > 500) {
@@ -168,6 +270,40 @@ public class RenderPanel extends JPanel implements KeyListener {
                                 catch (Exception e){
                                     e.printStackTrace();
                                 }
+
+                                if (gameState == 6){
+                                    if (sprite.getX() >= 1000 && sprite.getY() >= 300 && sprite.getY() <= 400) {
+                                        gameState = 7;
+                                        spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 100, 200, SpriteLoader.spiderWeb, null));
+                                        spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 100, 250, SpriteLoader.spiderWeb, null));
+                                        spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 100, 300, SpriteLoader.spiderWeb, null));
+                                        spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 100, 350, SpriteLoader.spiderWeb, null));
+                                        spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 100, 150, SpriteLoader.spiderWeb, null));
+                                        spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 100, 400, SpriteLoader.spiderWeb, null));
+                                        spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 100, 450, SpriteLoader.spiderWeb, null));
+                                        spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 100, 500, SpriteLoader.spiderWeb, null));
+                                    }
+                                }
+                                else if (gameState == 7){
+                                    if (sprite.getX() <= 250 && sprite.getY() >= 300 && sprite.getY() <= 400) {
+                                        gameState = 8;
+                                        spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 1300, 200, SpriteLoader.spiderWeb, null));
+                                        spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 1300, 250, SpriteLoader.spiderWeb, null));
+                                        spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 1300, 300, SpriteLoader.spiderWeb, null));
+                                        spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 1300, 350, SpriteLoader.spiderWeb, null));
+                                        spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 1300, 150, SpriteLoader.spiderWeb, null));
+                                        spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 1300, 400, SpriteLoader.spiderWeb, null));
+                                        spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 1300, 450, SpriteLoader.spiderWeb, null));
+                                        spiderwebs.add(new Enemy(SpriteLoader.spiderWeb, 1300, 500, SpriteLoader.spiderWeb, null));
+                                    }
+                                }
+                                else if (gameState == 8) {
+                                    if (sprite.getX() >= 1000 && sprite.getY() >= 300 && sprite.getY() <= 400) {
+                                        spiderwebs = new ArrayList<>();
+                                        gameState = 9;
+                                    }
+                                }
+
                             }
                             if (!keyCodes[KeyEvent.VK_SPACE]) {
                                 if (keyCodes[KeyEvent.VK_W])
@@ -207,7 +343,6 @@ public class RenderPanel extends JPanel implements KeyListener {
         }).start();
     }
 
-
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -224,6 +359,19 @@ public class RenderPanel extends JPanel implements KeyListener {
                 sprite.draw(g, this);
             if (sprite instanceof PlayerSprite)
                 sprite.draw(g, this);
+        }
+        if (gameState == 6)
+            g.drawImage(SpriteLoader.spider, 1100, 200, 250,250, null);
+        if (gameState == 7)
+            g.drawImage(SpriteLoader.leftSpider, 0, 200, 250,250, null);
+        if (gameState == 8)
+            g.drawImage(SpriteLoader.spider, 1100, 200, 250,250, null);
+        if (gameState == 9){
+            g.drawImage(SpriteLoader.deadSpider, 500, 200, 250,250, null);
+        }
+
+        for (Enemy sprite : spiderwebs){
+            sprite.getDamageSprite().draw(g, this);
         }
     }
 
@@ -257,5 +405,37 @@ public class RenderPanel extends JPanel implements KeyListener {
     @Override
     public void keyReleased(KeyEvent e) {
         keyCodes[e.getKeyCode()] = false;
+    }
+
+    public int getGameState() {
+        return gameState;
+    }
+
+    public void setGameState(int gameState) {
+        this.gameState = gameState;
+    }
+
+    public boolean[] getKeyCodes() {
+        return keyCodes;
+    }
+
+    public void setKeyCodes(boolean[] keyCodes) {
+        this.keyCodes = keyCodes;
+    }
+
+    public long[] getKeyCodesTimes() {
+        return keyCodesTimes;
+    }
+
+    public void setKeyCodesTimes(long[] keyCodesTimes) {
+        this.keyCodesTimes = keyCodesTimes;
+    }
+
+    public ArrayList<Sprite> getSprites() {
+        return sprites;
+    }
+
+    public void setSprites(ArrayList<Sprite> sprites) {
+        this.sprites = sprites;
     }
 }
