@@ -23,7 +23,6 @@ public class Word {
         try {
             BufferedReader br = new BufferedReader(new FileReader("cmudict.txt"));
             String[] dictionary = new String[134298];
-            int big = 0;
 
             String[] tempArr;
             int i = 0;
@@ -31,13 +30,9 @@ public class Word {
                 tempArr = br.readLine().split("  ");
                 dictionary[i] = tempArr[0];
                 dictionaryPronunciation[i] = tempArr[1].split(" ");
-
-                if (dictionaryPronunciation[i].length > big)
-                    big = dictionaryPronunciation[i].length;
                 i++;
             }
             dict = Arrays.asList(dictionary);
-            System.out.println(big);
 
         }
         catch (Exception e){

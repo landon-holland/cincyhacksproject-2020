@@ -7,18 +7,16 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 public class RenderPanel extends JPanel implements KeyListener {
-    private int x;
-    private int y;
-    private int widthOfSprites;
-    private int heightOfSprites;
-//    private Enemy enemy = new Enemy();
-//    private Wall wall = new Wall();
+    private int x = 0;
+    private int y = 0;
+    private int widthOfSprites = 50;
+    private int heightOfSprites = 50;
     private boolean[] keyCodes = new boolean[1000];
     private long[] keyCodesTimes = new long[1000];
-    private ArrayList<Sprite> sprites = SpriteLoader.load("sprites.txt");
+    private ArrayList<Sprite>  sprites;
 
     public RenderPanel(){
-        this(0,0,0,0);
+        this(0,0,50,50);
     }
 
     public RenderPanel(int x, int y, int widthOfSprites, int heightOfSprites){
@@ -27,16 +25,10 @@ public class RenderPanel extends JPanel implements KeyListener {
         this.widthOfSprites = widthOfSprites;
         this.heightOfSprites = heightOfSprites;
 
+        sprites = SpriteLoader.load("sprites.txt", widthOfSprites, heightOfSprites);
+
         setFocusable(true);
         addKeyListener(this);
-
-//        try {
-//            enemy.setImage(ImageIO.read(new File("Sprites\\fireman.png")));
-//            wall.setImage(ImageIO.read(new File("Sprites\\brick.png")));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        wall.setX(100);
 
         new Timer(200, new ActionListener() {
             @Override
@@ -63,8 +55,6 @@ public class RenderPanel extends JPanel implements KeyListener {
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-//        enemy.draw(g, this);
-//        wall.draw(g, this);
         for (Sprite sprite : sprites){
             sprite.draw(g, this);
         }
@@ -111,25 +101,9 @@ public class RenderPanel extends JPanel implements KeyListener {
 
     }
 
-
-
     @Override
     public void keyPressed(KeyEvent e) {
         keyCodes[e.getKeyCode()] = true;
-        keyCodesTimes[e.getKeyCode()] = System.currentTimeMillis();
-//        if (e.getKeyChar() == 'w')
-//            y += heightOfSprites;
-//        if (e.getKeyChar() == 's')
-//            y -= heightOfSprites;
-//        if (e.getKeyChar() == 'a')
-//            x += widthOfSprites;
-//        if (e.getKeyChar() == 'd')
-//            x -= widthOfSprites;
-
-        if (x < 0)
-            x = 0;
-        if (y < 0)
-            y = 0;
 
         repaint();
     }
@@ -150,7 +124,5 @@ public class RenderPanel extends JPanel implements KeyListener {
             }).start();
         } else
             keyCodes[e.getKeyCode()] = false;
-
-
     }
 }
