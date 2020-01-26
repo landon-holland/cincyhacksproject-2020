@@ -45,7 +45,7 @@ public class Enemy extends CollideableSprite{
             clip.start();
         }
         catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

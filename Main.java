@@ -22,7 +22,7 @@ public class Main {
         gui.setVisible(true);
 
         long time = System.currentTimeMillis();
-        while (System.currentTimeMillis() - time < 30000);
+        while (System.currentTimeMillis() - time < 3000);
 
         gui.setVisible(false);
         gui.remove(cutscenePanel);
@@ -31,7 +31,7 @@ public class Main {
         gui.setVisible(true);
 
         time = System.currentTimeMillis();
-        while (System.currentTimeMillis() - time < 17000);
+        while (System.currentTimeMillis() - time < 1700);
         gui.setVisible(false);
         gui.remove(cutscenePanel);
         RenderPanel renderPanel = new RenderPanel(50,50, 0);
@@ -42,6 +42,14 @@ public class Main {
         while (true){
             if (renderPanel.getGameState() == 5)
                 break;
+            if (renderPanel.getGameState() == 9){
+                gui.setVisible(false);
+                gui.remove(renderPanel);
+                Credits credits = new Credits();
+                gui.add(credits);
+                gui.setVisible(true);
+                while (true);
+            }
         }
         gui.setVisible(false);
         gui.remove(renderPanel);
@@ -56,6 +64,19 @@ public class Main {
         gui.remove(cutscenePanel);
         renderPanel = new RenderPanel(50,50, 1);
         gui.add(renderPanel);
+        gui.setVisible(true);
+
+        while (true){
+            if (renderPanel.getGameState() == 9)
+                break;
+            //System.out.println(renderPanel.getGameState());
+        }
+
+        Thread.sleep(5000);
+        gui.setVisible(false);
+        gui.remove(renderPanel);
+        Credits credits = new Credits();
+        gui.add(credits);
         gui.setVisible(true);
 
     }

@@ -177,6 +177,10 @@ public class RenderPanel extends JPanel implements KeyListener {
                                     continue;
                                 }
                             }
+                            if (((PlayerSprite) sprite).getHealth() <= 0){
+                                gameState = 9;
+                                return;
+                            }
                             else if (gameState == 1){
                                 if (sprite.getX() > 400 && sprite.getX() < 800 && sprite.getY() > 600) {
                                     gameState = 2;
@@ -231,7 +235,7 @@ public class RenderPanel extends JPanel implements KeyListener {
                                     sprite.setImage(((PlayerSprite) sprite).getIdle2());
 
                             }
-                            if (keyCodes[KeyEvent.VK_D] && System.currentTimeMillis() - keyCodesTimes[KeyEvent.VK_D] > 500) {
+                            if (keyCodes[KeyEvent.VK_D] && System.currentTimeMillis() - keyCodesTimes[KeyEvent.VK_D] > 50) {
                                 sprite.move(widthOfSprites, 0);
                                 keyCodesTimes[KeyEvent.VK_D] = System.currentTimeMillis();
 
