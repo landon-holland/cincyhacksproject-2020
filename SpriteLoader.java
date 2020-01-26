@@ -20,6 +20,16 @@ public class SpriteLoader {
     private static BufferedImage umbrella;
     private static BufferedImage walkLeftFoot;
     private static BufferedImage walkRightFoot;
+    private static BufferedImage asphaltBlank;
+    private static BufferedImage asphaltYellowLine;
+    private static BufferedImage attack;
+    private static BufferedImage faceUp;
+    private static BufferedImage lightBall;
+    private static BufferedImage lightningMan;
+    private static BufferedImage spider;
+    private static BufferedImage spiderWeb;
+    private static BufferedImage upAttack;
+
 
     private static String fireAttack = "audio\\fire attack.wav";
     private static String snowSound = "audio\\snow attack.wav";
@@ -45,6 +55,16 @@ public class SpriteLoader {
             umbrella = ImageIO.read(new File("Sprites\\umbrella.png"));
             walkLeftFoot = ImageIO.read(new File("Sprites\\walk left foot.png"));
             walkRightFoot = ImageIO.read(new File("Sprites\\walk right foot.png"));
+
+            asphaltBlank = ImageIO.read(new File("Sprites\\asphalt blank.png"));
+            asphaltYellowLine = ImageIO.read(new File("Sprites\\asphalt yellow line.png"));
+            attack = ImageIO.read(new File("Sprites\\attack.png"));
+            faceUp = ImageIO.read(new File("Sprites\\faceUp.png"));
+            lightBall = ImageIO.read(new File("Sprites\\lightball.png"));
+            lightningMan = ImageIO.read(new File("Sprites\\lightningman.png"));
+            spider = ImageIO.read(new File("Sprites\\spider.png"));
+            spiderWeb = ImageIO.read(new File("Sprites\\spiderweb.png"));
+            upAttack = ImageIO.read(new File("Sprites\\upAttack.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,7 +100,7 @@ public class SpriteLoader {
                             sprites.add(new Background(grass, i*spriteWidth, j*spiteHeight));
                             break;
                         case 'f':
-                            sprites.add(new Player(i*spriteWidth, j*spiteHeight, idle1, idle2, frostBreath,
+                            sprites.add(new PlayerSprite(i*spriteWidth, j*spiteHeight, idle1, idle2, frostBreath,
                                     umbrella, walkLeftFoot, walkRightFoot));
                             break;
 

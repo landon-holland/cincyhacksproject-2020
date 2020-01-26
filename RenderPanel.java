@@ -3,8 +3,6 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
@@ -32,34 +30,16 @@ public class RenderPanel extends JPanel implements KeyListener {
         sprites = SpriteLoader.load("sprites.txt", widthOfSprites, heightOfSprites);
 
         setFocusable(true);
+        requestFocus();
         addKeyListener(this);
 
-//        new Timer(200, new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                for (Sprite sprite : sprites){
-//                    if (sprite instanceof Player){
-//                        if (keyCodes[KeyEvent.VK_W])
-//                            sprite.move(0, -heightOfSprites);
-//                        if (keyCodes[KeyEvent.VK_S])
-//                            sprite.move(0, heightOfSprites);
-//                        if (keyCodes[KeyEvent.VK_A])
-//                            sprite.move(-widthOfSprites, 0);
-//                        if (keyCodes[KeyEvent.VK_D])
-//                            sprite.move(widthOfSprites, 0);
-//                        repaint();
-//                    }
-//                }
-//
-//            }
-//        }).start();
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
                     for (Sprite sprite : sprites){
-                        if (sprite instanceof Player){
+                        if (sprite instanceof PlayerSprite){
                             if (keyCodes[KeyEvent.VK_W] && System.currentTimeMillis() - keyCodesTimes[KeyEvent.VK_W] > 500) {
                                 sprite.move(0, -heightOfSprites);
                                 keyCodesTimes[KeyEvent.VK_W] = System.currentTimeMillis();
@@ -77,7 +57,7 @@ public class RenderPanel extends JPanel implements KeyListener {
                                 keyCodesTimes[KeyEvent.VK_D] = System.currentTimeMillis();
                             }
                             if (keyCodes[KeyEvent.VK_SPACE] && System.currentTimeMillis() - keyCodesTimes[KeyEvent.VK_SPACE] > 500){
-                                sprite.setImage(((Player) sprite).getFrostBreath());
+                                sprite.setImage(((PlayerSprite) sprite).getFrostBreath());
                                 keyCodesTimes[KeyEvent.VK_SPACE] = System.currentTimeMillis();
                                 try {
                                     AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File("audio\\swing sound.wav"));
@@ -91,7 +71,7 @@ public class RenderPanel extends JPanel implements KeyListener {
                                 }
                             }
                             if (!keyCodes[KeyEvent.VK_SPACE]) {
-                                sprite.setImage(((Player) sprite).getIdle1());
+                                sprite.setImage(((PlayerSprite) sprite).getIdle1());
                             }
 
                             repaint();
@@ -109,7 +89,7 @@ public class RenderPanel extends JPanel implements KeyListener {
         Sprite player = null;
         for (Sprite sprite : sprites){
             sprite.draw(g, this);
-            if (sprite instanceof Player)
+            if (sprite instanceof PlayerSprite)
                 player = sprite;
         }
         if (player != null)

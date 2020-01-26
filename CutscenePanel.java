@@ -13,7 +13,8 @@ public class CutscenePanel extends JPanel {
     CutscenePanel(int cutsceneNumber, String cityname, String currentweather) throws IOException, CannotRealizeException, NoPlayerException {
         // Time to make the player depending on the cutscene
         if (cutsceneNumber == 1) {
-            Player mediaPlayer = Manager.createRealizedPlayer(new File("C:\\Users\\multi\\Documents\\Git\\cincyhacksproject-2020\\Cutscenes\\1.mov").toURI().toURL());
+            Player mediaPlayer = Manager.createRealizedPlayer(new File(
+                    "F:\\Java\\CincyHacks2020\\Cutscenes\\1.mov").toURI().toURL());
             Component video = mediaPlayer.getVisualComponent();
             add(video);
             mediaPlayer.start();
@@ -31,13 +32,15 @@ public class CutscenePanel extends JPanel {
             }).start();
         }
         else if (cutsceneNumber == 2) {
-            Player mediaPlayer = Manager.createRealizedPlayer(new File("C:\\Users\\multi\\Documents\\Git\\cincyhacksproject-2020\\Cutscenes\\2.mov").toURI().toURL());
+            Player mediaPlayer = Manager.createRealizedPlayer(new File(
+                    "F:\\Java\\CincyHacks2020\\Cutscenes\\2.mov").toURI().toURL());
             Component video = mediaPlayer.getVisualComponent();
             add(video);
             mediaPlayer.start();
         }
         else if (cutsceneNumber == 3) {
-            Player mediaPlayer = Manager.createRealizedPlayer(new File("C:\\Users\\multi\\Documents\\Git\\cincyhacksproject-2020\\Cutscenes\\3.mov").toURI().toURL());
+            Player mediaPlayer = Manager.createRealizedPlayer(new File(
+                    "F:\\Java\\CincyHacks2020\\Cutscenes\\3.mov").toURI().toURL());
             Component video = mediaPlayer.getVisualComponent();
             add(video);
             mediaPlayer.start();
