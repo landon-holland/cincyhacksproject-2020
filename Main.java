@@ -10,18 +10,18 @@ public class Main {
 
         Weather weather = new Weather("dc73c7c1d5b77d6a5e247211f2cc7e1d", zip);
 
-        new TextAnalyzer("Hello my name is roy").pronounce();
+        //new TextAnalyzer("Hello my name is roy").pronounce();
 
         JFrame gui = new JFrame();
         gui.setSize(1280,720);
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        CutscenePanel cutscenePanel = new CutscenePanel(1, weather.findCurrentCityName(), getWeather(weather.findCurrentDescription()));
+        /*CutscenePanel cutscenePanel = new CutscenePanel(1, weather.findCurrentCityName(), getWeather(weather.findCurrentDescription()));
         gui.add(cutscenePanel);
         gui.setVisible(true);
 
         long time = System.currentTimeMillis();
-        while (System.currentTimeMillis() - time < 3000);
+        while (System.currentTimeMillis() - time < 30000);
 
         gui.setVisible(false);
         gui.remove(cutscenePanel);
@@ -30,10 +30,10 @@ public class Main {
         gui.setVisible(true);
 
         time = System.currentTimeMillis();
-        while (System.currentTimeMillis() - time < 1700);
+        while (System.currentTimeMillis() - time < 17000);
         gui.setVisible(false);
-        gui.remove(cutscenePanel);
-        gui.add(new RenderPanel(0,0,50,50));
+        gui.remove(cutscenePanel);*/
+        gui.add(new RenderPanel(50,50));
         gui.setVisible(true);
     }
 

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public abstract class CollideableSprite extends Sprite{
     public static ArrayList<Sprite> collideables = new ArrayList<>();
-    private static int health = 5;
+    private int health = 25;
     public CollideableSprite(){
         super();
         collideables.add(this);
@@ -15,19 +15,33 @@ public abstract class CollideableSprite extends Sprite{
     }
 
     @Override
-    public void draw(Graphics g, RenderPanel r){super.draw(g,r);
-        g.setColor(Color.RED);
-        g.fillRect((x - r.getX() + (r.getWidthOfSprites() / 4)), y - r.getY() - 15, health, 7);
-        g.setColor(Color.RED);
+    public void draw(Graphics g, RenderPanel r){
+        if (health > 0) {
+            super.draw(g, r);
+            g.setColor(Color.RED);
+            g.fillRect((x - r.getX() + (r.getWidthOfSprites() / 4)), y - r.getY() - 15, health, 7);
+            g.setColor(Color.RED);
+        }
     }
 
-    public static void setHealth(int hp){
+    public void setHealth(int hp){
         health = hp;
     }
 
+    public void damage(int damage){
+        health -= damage;
+        if (health <= 0) {
+            try {
+                CollideableSprite.getCollideables().remove(this);
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+    }
 
 
-    public static int getHealth(){
+
+    public int getHealth(){
         return health;
     }
 
@@ -50,6 +64,12 @@ public abstract class CollideableSprite extends Sprite{
             this.x -= x;
             this.y -= y;
         }
+        if (this.x < 0)
+            this.x = 0;
+        if (this.y < 0)
+            this.y = 0;
+        if (this.y > 650)
+            this.y = 650;
     }
 
     public ArrayList<Sprite> getCollisions(){
@@ -65,5 +85,5 @@ public abstract class CollideableSprite extends Sprite{
 
         return collisions;
     }
-    
+
 }

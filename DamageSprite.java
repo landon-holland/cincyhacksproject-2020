@@ -1,12 +1,14 @@
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class DamageSprite extends CollideableSprite {
-    public double damage;
+    private int damage;
+    private boolean isVisible = false;
 
     public DamageSprite(){
         super();
     }
-    public DamageSprite(BufferedImage image, int x, int y, double damage){
+    public DamageSprite(BufferedImage image, int x, int y, int damage){
         super(image, x, y);
         this.damage = damage;
     }
@@ -17,12 +19,32 @@ public class DamageSprite extends CollideableSprite {
         if (getCollisions().size() > 0) {
             for (Sprite sprite : getCollisions()){
                 if (sprite instanceof CollideableSprite){
-                    //sprite.damage(damage)
+                    ((CollideableSprite) sprite).damage(damage);
                 }
             }
-            this.x -= x;
-            this.y -= y;
         }
     }
 
+    public void draw(Graphics g, RenderPanel r){
+        if (isVisible){
+            g.drawImage(image, x - r.getX(), y - r.getY(),
+                    r.getWidthOfSprites(), r.getHeightOfSprites(), null);
+        }
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
+
+    public boolean isVisible() {
+        return isVisible;
+    }
+
+    public void setVisible(boolean visible) {
+        isVisible = visible;
+    }
 }
