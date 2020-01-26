@@ -1,9 +1,13 @@
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
 import java.util.ArrayList;
 
 public class RenderPanel extends JPanel implements KeyListener {
@@ -30,23 +34,70 @@ public class RenderPanel extends JPanel implements KeyListener {
         setFocusable(true);
         addKeyListener(this);
 
-        new Timer(200, new ActionListener() {
+//        new Timer(200, new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                for (Sprite sprite : sprites){
+//                    if (sprite instanceof Player){
+//                        if (keyCodes[KeyEvent.VK_W])
+//                            sprite.move(0, -heightOfSprites);
+//                        if (keyCodes[KeyEvent.VK_S])
+//                            sprite.move(0, heightOfSprites);
+//                        if (keyCodes[KeyEvent.VK_A])
+//                            sprite.move(-widthOfSprites, 0);
+//                        if (keyCodes[KeyEvent.VK_D])
+//                            sprite.move(widthOfSprites, 0);
+//                        repaint();
+//                    }
+//                }
+//
+//            }
+//        }).start();
+
+        new Thread(new Runnable() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                for (Sprite sprite : sprites){
-                    if (sprite instanceof Player){
-                        if (keyCodes[KeyEvent.VK_W])
-                            sprite.move(0, -heightOfSprites);
-                        if (keyCodes[KeyEvent.VK_S])
-                            sprite.move(0, heightOfSprites);
-                        if (keyCodes[KeyEvent.VK_A])
-                            sprite.move(-widthOfSprites, 0);
-                        if (keyCodes[KeyEvent.VK_D])
-                            sprite.move(widthOfSprites, 0);
-                        repaint();
+            public void run() {
+                while (true) {
+                    for (Sprite sprite : sprites){
+                        if (sprite instanceof Player){
+                            if (keyCodes[KeyEvent.VK_W] && System.currentTimeMillis() - keyCodesTimes[KeyEvent.VK_W] > 500) {
+                                sprite.move(0, -heightOfSprites);
+                                keyCodesTimes[KeyEvent.VK_W] = System.currentTimeMillis();
+                            }
+                            if (keyCodes[KeyEvent.VK_S] && System.currentTimeMillis() - keyCodesTimes[KeyEvent.VK_S] > 500) {
+                                sprite.move(0, heightOfSprites);
+                                keyCodesTimes[KeyEvent.VK_S] = System.currentTimeMillis();
+                            }
+                            if (keyCodes[KeyEvent.VK_A] && System.currentTimeMillis() - keyCodesTimes[KeyEvent.VK_A] > 500) {
+                                sprite.move(-widthOfSprites, 0);
+                                keyCodesTimes[KeyEvent.VK_A] = System.currentTimeMillis();
+                            }
+                            if (keyCodes[KeyEvent.VK_D] && System.currentTimeMillis() - keyCodesTimes[KeyEvent.VK_D] > 500) {
+                                sprite.move(widthOfSprites, 0);
+                                keyCodesTimes[KeyEvent.VK_D] = System.currentTimeMillis();
+                            }
+                            if (keyCodes[KeyEvent.VK_SPACE] && System.currentTimeMillis() - keyCodesTimes[KeyEvent.VK_SPACE] > 500){
+                                sprite.setImage(((Player) sprite).getFrostBreath());
+                                keyCodesTimes[KeyEvent.VK_SPACE] = System.currentTimeMillis();
+                                try {
+                                    AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File("audio\\swing sound.wav"));
+
+                                    Clip clip = AudioSystem.getClip();
+                                    clip.open(audioIn);
+                                    clip.start();
+                                }
+                                catch (Exception e){
+                                    e.printStackTrace();
+                                }
+                            }
+                            if (!keyCodes[KeyEvent.VK_SPACE]) {
+                                sprite.setImage(((Player) sprite).getIdle1());
+                            }
+
+                            repaint();
+                        }
                     }
                 }
-
             }
         }).start();
     }
@@ -55,9 +106,14 @@ public class RenderPanel extends JPanel implements KeyListener {
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
+        Sprite player = null;
         for (Sprite sprite : sprites){
             sprite.draw(g, this);
+            if (sprite instanceof Player)
+                player = sprite;
         }
+        if (player != null)
+            player.draw(g, this);
     }
 
 
@@ -104,25 +160,10 @@ public class RenderPanel extends JPanel implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         keyCodes[e.getKeyCode()] = true;
-
-        repaint();
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (System.currentTimeMillis() - keyCodesTimes[e.getKeyCode()] < 200){
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(150);
-                    } catch (InterruptedException ex) {
-                        ex.printStackTrace();
-                    }
-                    keyCodes[e.getKeyCode()] = false;
-                }
-            }).start();
-        } else
-            keyCodes[e.getKeyCode()] = false;
+        keyCodes[e.getKeyCode()] = false;
     }
 }
