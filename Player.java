@@ -15,8 +15,8 @@ public class Player extends CollideableSprite {
         super(image, x, y);
     }
 
-    public Player(int x, int y, BufferedImage frostBreath, BufferedImage idle1,
-        BufferedImage idle2, BufferedImage umbrella, BufferedImage walkLeftFoot, BufferedImage walkRightFoot){
+    public Player(int x, int y, BufferedImage idle1, BufferedImage idle2,
+        BufferedImage frostBreath, BufferedImage umbrella, BufferedImage walkLeftFoot, BufferedImage walkRightFoot){
         super(idle1, x, y);
         this.frostBreath = frostBreath;
         this.idle1 = idle1;
