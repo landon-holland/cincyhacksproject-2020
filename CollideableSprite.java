@@ -1,9 +1,10 @@
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 public abstract class CollideableSprite extends Sprite{
     public static ArrayList<Sprite> collideables = new ArrayList<>();
-    
+    private static int health = 5;
     public CollideableSprite(){
         super();
         collideables.add(this);
@@ -11,6 +12,23 @@ public abstract class CollideableSprite extends Sprite{
     public CollideableSprite(BufferedImage image, int x, int y){
         super(image, x, y);
         collideables.add(this);
+    }
+
+    @Override
+    public void draw(Graphics g, RenderPanel r){super.draw(g,r);
+        g.setColor(Color.RED);
+        g.fillRect((x - r.getX() + (r.getWidthOfSprites() / 4)), y - r.getY() - 15, health, 7);
+        g.setColor(Color.RED);
+    }
+
+    public static void setHealth(int hp){
+        health = hp;
+    }
+
+
+
+    public static int getHealth(){
+        return health;
     }
 
     public static void addColliadble(Sprite sprite){
