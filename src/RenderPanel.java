@@ -72,7 +72,7 @@ public class RenderPanel extends JPanel implements KeyListener {
                                     double durationInSeconds = (frames+0.0) / format.getFrameRate();
                                     long time = System.currentTimeMillis();
                                     while (System.currentTimeMillis() - time < durationInSeconds * 1000){
-                                        if (gameState == 9) {
+                                        if (gameState >= 9) {
                                             clip.stop();
                                             return;
                                         }
@@ -178,7 +178,8 @@ public class RenderPanel extends JPanel implements KeyListener {
                                 }
                             }
                             if (((PlayerSprite) sprite).getHealth() <= 0){
-                                gameState = 9;
+                                gameState = 10;
+                                spiderwebs = new ArrayList<>();
                                 return;
                             }
                             else if (gameState == 1){
@@ -372,6 +373,9 @@ public class RenderPanel extends JPanel implements KeyListener {
             g.drawImage(SpriteLoader.spider, 1100, 200, 250,250, null);
         if (gameState == 9){
             g.drawImage(SpriteLoader.deadSpider, 500, 200, 250,250, null);
+        }
+        if (gameState == 10){
+            g.drawImage(SpriteLoader.spider, 500, 200, 250,250, null);
         }
 
         for (Enemy sprite : spiderwebs){

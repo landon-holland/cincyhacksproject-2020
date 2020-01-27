@@ -15,7 +15,7 @@ public class Main {
         //new TextAnalyzer("Hello my name is roy").pronounce();
 
 
-        JFrame gui = new JFrame();
+        JFrame gui = new JFrame("game");
         gui.setSize(1280,720);
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -56,7 +56,7 @@ public class Main {
         while (true){
             if (renderPanel.getGameState() == 5)
                 break;
-            if (renderPanel.getGameState() == 9){
+            if (renderPanel.getGameState() >= 9){
                 gui.setVisible(false);
                 gui.remove(renderPanel);
                 Credits credits = new Credits();
@@ -83,7 +83,7 @@ public class Main {
         gui.setVisible(true);
 
         while (true){
-            if (renderPanel.getGameState() == 9)
+            if (renderPanel.getGameState() >= 9)
                 break;
             //System.out.println(renderPanel.getGameState());
         }
