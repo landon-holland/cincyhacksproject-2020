@@ -1,39 +1,53 @@
 import javax.swing.*;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Scanner;
+
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
         int zip = Integer.parseInt(JOptionPane.showInputDialog("Enter your zip code:"));
+        boolean skipCutscenes;
 
         Weather weather = new Weather("dc73c7c1d5b77d6a5e247211f2cc7e1d", zip);
-
+        //13315
+        //12345
         //new TextAnalyzer("Hello my name is roy").pronounce();
+
 
         JFrame gui = new JFrame();
         gui.setSize(1280,720);
         gui.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        CutscenePanel cutscenePanel = new CutscenePanel(1, weather.findCurrentCityName(), getWeather(weather.findCurrentDescription()));
-        gui.add(cutscenePanel);
-        gui.setVisible(true);
 
-        long time = System.currentTimeMillis();
-        while (System.currentTimeMillis() - time < 3000);
+        CutscenePanel cutscenePanel;
+        long time;
 
-        gui.setVisible(false);
-        gui.remove(cutscenePanel);
-        cutscenePanel = new CutscenePanel(2, weather.findCurrentCityName(), getWeather(weather.findCurrentDescription()));
-        gui.add(cutscenePanel);
-        gui.setVisible(true);
+        if (JOptionPane.showConfirmDialog(null, "Skip cutscenes:") == JOptionPane.YES_OPTION) {
+            skipCutscenes = true;
+        } else{
+            skipCutscenes = false;
+        }
 
-        time = System.currentTimeMillis();
-        while (System.currentTimeMillis() - time < 1700);
-        gui.setVisible(false);
-        gui.remove(cutscenePanel);
+        if (!skipCutscenes){
+            cutscenePanel = new CutscenePanel(1, weather.findCurrentCityName(), getWeather(weather.findCurrentDescription()));
+            gui.add(cutscenePanel);
+            gui.setVisible(true);
+
+            time = System.currentTimeMillis();
+            while (System.currentTimeMillis() - time < 30000) ;
+
+            gui.setVisible(false);
+            gui.remove(cutscenePanel);
+            cutscenePanel = new CutscenePanel(2, weather.findCurrentCityName(), getWeather(weather.findCurrentDescription()));
+            gui.add(cutscenePanel);
+            gui.setVisible(true);
+
+            time = System.currentTimeMillis();
+            while (System.currentTimeMillis() - time < 17000) ;
+            gui.setVisible(false);
+            gui.remove(cutscenePanel);
+        }
         RenderPanel renderPanel = new RenderPanel(50,50, 0, weather.findCurrentDescription());
         gui.add(renderPanel);
         gui.setVisible(true);
@@ -54,14 +68,16 @@ public class Main {
         gui.setVisible(false);
         gui.remove(renderPanel);
         renderPanel.setSprites(new ArrayList<>());
-        cutscenePanel = new CutscenePanel(3, weather.findCurrentCityName(), getWeather(weather.findCurrentDescription()));
-        gui.add(cutscenePanel);
-        gui.setVisible(true);
+        if (!skipCutscenes) {
+            cutscenePanel = new CutscenePanel(3, weather.findCurrentCityName(), getWeather(weather.findCurrentDescription()));
+            gui.add(cutscenePanel);
+            gui.setVisible(true);
 
-        time = System.currentTimeMillis();
-        while (System.currentTimeMillis() - time < 60000);
-        gui.setVisible(false);
-        gui.remove(cutscenePanel);
+            time = System.currentTimeMillis();
+            while (System.currentTimeMillis() - time < 60000) ;
+            gui.setVisible(false);
+            gui.remove(cutscenePanel);
+        }
         renderPanel = new RenderPanel(50,50, 1, weather.findCurrentDescription());
         gui.add(renderPanel);
         gui.setVisible(true);

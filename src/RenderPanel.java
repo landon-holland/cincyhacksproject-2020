@@ -86,7 +86,7 @@ public class RenderPanel extends JPanel implements KeyListener {
                 }
 
                 while (true) {
-                    if (System.currentTimeMillis() - time > 500){
+                    if (System.currentTimeMillis() - time > 400 || gameState >= 6 && System.currentTimeMillis() - time > 300){
                         time = System.currentTimeMillis();
                         if (isIdle1)
                             isIdle1 = false;
