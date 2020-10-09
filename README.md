@@ -1,9 +1,5 @@
-Weather Man
+# CincyHacks 2020 Project
+We created a simple Java game named Weather Man.
 
-cincyhacksproject-2020
-
-How to use:
-
-Install JMF 2.1.1e and org.json:json into your IDE
-
-Done!
+## Installation
+Install JMF 2.1.1e and org.json:json into your IDE and run Main.java!
